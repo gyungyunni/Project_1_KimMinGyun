@@ -64,7 +64,6 @@ public class CommentService {
 
     }
 
-    //reply를 받고 replyRepository에 저장했지만, commet를 read할때 업뎃까지는 구현하지 못함
     public int addReply(
             Long itemId,
             Long commentId,
