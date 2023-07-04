@@ -2,6 +2,7 @@ package com.example.mutsamarket.service;
 
 import com.example.mutsamarket.dto.salesItemDto.SalesItemEnrollDto;
 import com.example.mutsamarket.dto.salesItemDto.SalesItemReadDto;
+import com.example.mutsamarket.entity.Comment;
 import com.example.mutsamarket.entity.SalesItem;
 import com.example.mutsamarket.repository.SalesItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -66,15 +67,17 @@ public class MarketService {
             Long itemId,
             SalesItemEnrollDto dto
     ) {
-        // 아니면 로직 진행
-        SalesItem updateItem = salesItemRepository.findById(Math.toIntExact(itemId)).orElseThrow(RuntimeException::new);
-        updateItem.setId(itemId);
-        updateItem.setTitle(dto.getTitle());
-        updateItem.setDescription(dto.getDescription());
-        updateItem.setMinPriceWanted(dto.getMinPriceWanted());
-        updateItem.setWriter(dto.getWriter());
-        updateItem.setPassword(dto.getPassword());
-        salesItemRepository.save(updateItem);
+        Optional<SalesItem> optionalSalesItem = salesItemRepository.findByWriterAndPasswordAndId(dto.getWriter(), dto.getPassword(), itemId);
+        if (optionalSalesItem.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        else {
+            SalesItem updateItem = optionalSalesItem.get();
+            updateItem.setTitle(dto.getTitle());
+            updateItem.setDescription(dto.getDescription());
+            updateItem.setMinPriceWanted(dto.getMinPriceWanted());
+            salesItemRepository.save(updateItem);
+        }
     }
 
     public SalesItemEnrollDto updateMarketImage(String writer, String password, MultipartFile Image, Long id) {
