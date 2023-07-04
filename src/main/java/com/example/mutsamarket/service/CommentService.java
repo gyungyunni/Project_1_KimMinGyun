@@ -2,12 +2,9 @@ package com.example.mutsamarket.service;
 
 import com.example.mutsamarket.dto.commentDto.CommentEnrollDto;
 import com.example.mutsamarket.dto.commentDto.CommentsReadDto;
-import com.example.mutsamarket.dto.replyDto.ReplyDto;
+import com.example.mutsamarket.dto.commentDto.ReplyDto;
 import com.example.mutsamarket.entity.Comment;
-import com.example.mutsamarket.entity.Reply;
-import com.example.mutsamarket.entity.SalesItem;
 import com.example.mutsamarket.repository.CommentRepository;
-import com.example.mutsamarket.repository.ReplyRepository;
 import com.example.mutsamarket.repository.SalesItemRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +23,6 @@ import java.util.Optional;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final SalesItemRepository salesItemRepository;
-    private final ReplyRepository replyRepository;
 
     public void enrollComment(CommentEnrollDto dto, Long itemId) {
 
@@ -71,12 +67,6 @@ public class CommentService {
     ){
         Comment co = commentRepository.findBySalesItemIdAndId(itemId, commentId);
         if(co.getReply() == null) {
-            Reply newReply = new Reply();
-            newReply.setWriter(dto.getWriter());
-            newReply.setReply(dto.getReply());
-            newReply.setPassword(dto.getPassword());
-            newReply.setComment(commentRepository.findBySalesItemIdAndId(itemId, commentId));
-            newReply = replyRepository.save(newReply);
 
             Comment comment = commentRepository.findBySalesItemIdAndId(itemId, commentId);
             comment.setReply(dto.getReply());
@@ -85,12 +75,6 @@ public class CommentService {
             return 1;
         }
         if(salesItemRepository.findById(itemId).getWriter().equals(dto.getWriter())) {
-            Reply newReply = new Reply();
-            newReply.setWriter(dto.getWriter());
-            newReply.setReply(dto.getReply());
-            newReply.setPassword(dto.getPassword());
-            newReply.setComment(commentRepository.findBySalesItemIdAndId(itemId, commentId));
-            newReply = replyRepository.save(newReply);
 
             Comment comment = commentRepository.findBySalesItemIdAndId(itemId, commentId);
             comment.setReply(dto.getReply());

@@ -1,9 +1,7 @@
 package com.example.mutsamarket.dto.commentDto;
 
-import com.example.mutsamarket.dto.replyDto.ReplyDto;
 import com.example.mutsamarket.entity.Comment;
 
-import com.example.mutsamarket.entity.Reply;
 import lombok.Data;
 
 @Data

@@ -1,4 +1,4 @@
-package com.example.mutsamarket.dto.replyDto;
+package com.example.mutsamarket.dto.commentDto;
 
 import lombok.Data;
 
