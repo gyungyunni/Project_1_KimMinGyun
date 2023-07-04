@@ -39,14 +39,21 @@ public class NegotiationService {
     public Page<NegotiationReadDto> readNegoPage(Long page, Long itemId, String writer, String password) {
         Pageable pageable = PageRequest.of(Math.toIntExact(page), 25);
 
-        //findBy로 했더니 IncorrectResultSizeDataAccessException 에러 발생
-        if(negotiationRepository.findTopBySalesItemWriterAndSalesItemPassword(writer,password).isPresent() || negotiationRepository.findTopByWriterAndPassword(writer,password).isPresent()){
+        // 대상 물품의 주인
+        if(negotiationRepository.findTopBySalesItemWriterAndSalesItemPassword(writer,password).isPresent()) {
             Page<Negotiation> negoPage
                     = negotiationRepository.findAllBySalesItemId(itemId, pageable);
 
             return negoPage.map(NegotiationReadDto::fromEntity);
+        }
+        // 네고 등록한 사용자
+        if(negotiationRepository.findTopByWriterAndPassword(writer,password).isPresent()){
+            Page<Negotiation> negoPage
+                    = negotiationRepository.findAllBySalesItemIdAndWriterAndPassword(itemId, writer,password, pageable);
 
-        }else {
+            return negoPage.map(NegotiationReadDto::fromEntity);
+        }
+        else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }

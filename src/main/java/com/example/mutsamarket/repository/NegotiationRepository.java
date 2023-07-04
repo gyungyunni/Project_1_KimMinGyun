@@ -11,6 +11,12 @@ import java.util.Optional;
 public interface NegotiationRepository extends JpaRepository<Negotiation, Integer> {
 
     Page<Negotiation> findAllBySalesItemId(Long itemId, Pageable pageable);
+    Page<Negotiation> findAllBySalesItemIdAndWriterAndPassword(
+            Long itemId,
+            String writer,
+            String password,
+            Pageable pageable
+    );
 
     Optional<Negotiation> findTopBySalesItemWriterAndSalesItemPassword(String writer, String password);
 
