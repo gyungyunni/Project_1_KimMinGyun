@@ -67,6 +67,7 @@ public class NegotiationService {
         String ok = "수락";
         String no = "거절";
         String done = "확정";
+
         if(dto.getStatus() == null) {
             // 아니면 로직 진행
             Optional<Negotiation> optionalNego = negotiationRepository.findBySalesItemIdAndIdAndWriterAndPassword(itemId, Math.toIntExact(id), dto.getWriter(), dto.getPassword());

@@ -18,6 +18,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -49,6 +51,22 @@ public class MarketService {
 
             // 아니면 404
         else throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+    public List<SalesItemReadDto> readItemAll() {
+
+        List<SalesItem> salesItemList = salesItemRepository.findAll();
+        if (salesItemList.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        List<SalesItemReadDto> salesItemReadDtoList = new ArrayList<>();
+        for (SalesItem salesItem : salesItemList) {
+            SalesItemReadDto salesItemDto = SalesItemReadDto.fromEntity(salesItem);
+            salesItemReadDtoList.add(salesItemDto);
+        }
+
+        return salesItemReadDtoList;
+
     }
 
     public Page<SalesItemReadDto> readPageItem(Long page, Long limit) {

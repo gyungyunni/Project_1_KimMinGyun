@@ -4,6 +4,7 @@ import com.example.mutsamarket.dto.commentDto.CommentEnrollDto;
 import com.example.mutsamarket.dto.salesItemDto.SalesItemDeleteDto;
 import com.example.mutsamarket.dto.salesItemDto.SalesItemEnrollDto;
 import com.example.mutsamarket.dto.salesItemDto.SalesItemReadDto;
+import com.example.mutsamarket.entity.SalesItem;
 import com.example.mutsamarket.service.CommentService;
 import com.example.mutsamarket.service.MarketService;
 import jakarta.validation.Valid;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RequestMapping("/api/mutsamarket")
@@ -45,6 +47,10 @@ public class ApiController {
             @PathVariable("itemId") Long itemId
     ){
         return marketService.readItem(itemId);
+    }
+    @GetMapping("/items/all")
+    public List<SalesItemReadDto> readAll(){
+        return marketService.readItemAll();
     }
 
     @GetMapping("/items")
