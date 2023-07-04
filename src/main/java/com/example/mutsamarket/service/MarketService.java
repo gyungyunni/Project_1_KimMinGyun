@@ -77,7 +77,6 @@ public class MarketService {
         salesItemRepository.save(updateItem);
     }
 
-    //TODO 일단 보류 잘 안됨
     public SalesItemEnrollDto updateMarketImage(String writer, String password, MultipartFile Image, Long id) {
         Optional<SalesItem> optionalMarket = salesItemRepository.findByWriterAndPasswordAndId(writer, password, id);
         if (optionalMarket.isEmpty()) {
