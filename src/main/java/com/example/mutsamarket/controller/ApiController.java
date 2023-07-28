@@ -4,8 +4,6 @@ import com.example.mutsamarket.dto.commentDto.CommentEnrollDto;
 import com.example.mutsamarket.dto.salesItemDto.SalesItemDeleteDto;
 import com.example.mutsamarket.dto.salesItemDto.SalesItemEnrollDto;
 import com.example.mutsamarket.dto.salesItemDto.SalesItemReadDto;
-import com.example.mutsamarket.entity.SalesItem;
-import com.example.mutsamarket.service.CommentService;
 import com.example.mutsamarket.service.MarketService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

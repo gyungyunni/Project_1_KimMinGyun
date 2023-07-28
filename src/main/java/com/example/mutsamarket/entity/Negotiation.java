@@ -11,6 +11,7 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
+@Table(name = "negotiation")
 public class Negotiation extends BaseEntity  {
     @Id   //pk
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -13,6 +13,7 @@ import java.util.prefs.BackingStoreException;
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
+@Table(name = "items")
 public class SalesItem extends BaseEntity {
     @Id   //pk
     @GeneratedValue(strategy = GenerationType.IDENTITY)

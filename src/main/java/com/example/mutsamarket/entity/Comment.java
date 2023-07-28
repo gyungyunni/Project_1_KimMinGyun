@@ -29,6 +29,5 @@ public class Comment extends BaseEntity {
     @ManyToOne
     private SalesItem salesItem;
 
-
 }
 
