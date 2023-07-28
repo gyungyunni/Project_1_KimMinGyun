@@ -13,9 +13,6 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
     Optional<Comment> findBySalesItemIdAndIdAndWriterAndPassword(Long itemId, Long id, String writer, String password);
 
-
     Comment findBySalesItemIdAndId(Long itemId, Long id);
-
-
 
 }

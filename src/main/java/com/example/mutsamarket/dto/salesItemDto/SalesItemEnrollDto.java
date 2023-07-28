@@ -29,6 +29,8 @@ public class SalesItemEnrollDto {
 
         private String password;
 
+        private UserEntity user;
+
         public static SalesItemEnrollDto fromEntity(SalesItem entity)
         {
                 SalesItemEnrollDto dto = new SalesItemEnrollDto();
@@ -37,6 +39,7 @@ public class SalesItemEnrollDto {
                 dto.setDescription(entity.getDescription());
                 dto.setMinPriceWanted(entity.getMinPriceWanted());
                 dto.setStatus(entity.getStatus());
+                dto.setUser(entity.getUser());
                 return dto;
         }
 }

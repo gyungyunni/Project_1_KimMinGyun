@@ -87,10 +87,9 @@ public class ApiController {
     }
     @DeleteMapping("/items/{itemId}")
     public ResponseEntity<Map<String, String>> deleteItem(
-            @PathVariable("itemId") Long itemId,
-            @RequestBody SalesItemDeleteDto dto
+            @PathVariable("itemId") Long itemId
     ) {
-        if (marketService.deleteItem(itemId, dto.getWriter(), dto.getPassword())) {
+        if (marketService.deleteItem(itemId)) {
 
             Map<String, String> responseBody = new HashMap<>();
             responseBody.put("message", "물품을 삭제했습니다.");

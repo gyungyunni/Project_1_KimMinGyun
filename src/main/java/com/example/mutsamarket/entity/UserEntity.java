@@ -1,12 +1,11 @@
 package com.example.mutsamarket.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -28,4 +27,8 @@ public class UserEntity {
 
     // 토큰 발행후 들어간다.
     private String token; // 토큰
+
+    @OneToMany
+    @JoinColumn(name = "user_id") //중간 생기는 테이블 없애기 위해서
+    private List<SalesItem> salesItems = new ArrayList<>();
 }

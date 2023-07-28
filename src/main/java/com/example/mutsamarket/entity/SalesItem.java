@@ -43,7 +43,7 @@ public class SalesItem extends BaseEntity {
     @ToString.Exclude
     private List<Negotiation> negotiations = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @ToString.Exclude
     private UserEntity user;
 }

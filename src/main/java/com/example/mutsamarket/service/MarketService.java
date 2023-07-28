@@ -49,7 +49,9 @@ public class MarketService {
         newItem.setStatus("판매중");
         newItem.setUser(user);
         newItem = salesItemRepository.save(newItem);
-        System.out.println(newItem.getUser());
+
+        salesItemRepository.findAll().forEach(System.out::println);
+        userRepository.findAll().forEach(System.out::println);
 
     }
 
@@ -155,9 +157,12 @@ public class MarketService {
         }
     }
 
-    public boolean deleteItem(Long id, String writer, String password) {
-        Optional<SalesItem> optionalSalesItem
-                = salesItemRepository.findByIdAndWriterAndPassword(id, writer, password);
+    public boolean deleteItem(Long id) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        Optional<SalesItem> optionalSalesItem = salesItemRepository.findByItemIdAndUsername(id, username);
 
         if (optionalSalesItem.isPresent()) {
             // DTO로 전환 후 반환
