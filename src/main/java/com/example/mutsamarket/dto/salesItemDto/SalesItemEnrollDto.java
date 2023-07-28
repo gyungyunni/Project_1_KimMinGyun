@@ -1,6 +1,7 @@
 package com.example.mutsamarket.dto.salesItemDto;
 
 import com.example.mutsamarket.entity.SalesItem;
+import com.example.mutsamarket.entity.UserEntity;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -24,7 +25,6 @@ public class SalesItemEnrollDto {
 
         private String status;
 
-        @NotNull
         private String writer;
 
         private String password;
@@ -37,8 +37,6 @@ public class SalesItemEnrollDto {
                 dto.setDescription(entity.getDescription());
                 dto.setMinPriceWanted(entity.getMinPriceWanted());
                 dto.setStatus(entity.getStatus());
-                dto.setWriter(entity.getWriter());
-                dto.setPassword(entity.getPassword());
                 return dto;
         }
 }

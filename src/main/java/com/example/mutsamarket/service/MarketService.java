@@ -3,14 +3,20 @@ package com.example.mutsamarket.service;
 import com.example.mutsamarket.dto.salesItemDto.SalesItemEnrollDto;
 import com.example.mutsamarket.dto.salesItemDto.SalesItemReadDto;
 import com.example.mutsamarket.entity.Comment;
+import com.example.mutsamarket.entity.CustomUserDetails;
 import com.example.mutsamarket.entity.SalesItem;
+import com.example.mutsamarket.entity.UserEntity;
 import com.example.mutsamarket.repository.SalesItemRepository;
+import com.example.mutsamarket.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -27,17 +33,23 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MarketService {
     private final SalesItemRepository salesItemRepository;
+    private final UserRepository userRepository;
 
     public void enrollSalesItem(SalesItemEnrollDto dto) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String check = authentication.getName();
+        Optional<UserEntity> optionalUser = userRepository.findByUsername(check);
+        UserEntity user = optionalUser.get();
 
         SalesItem newItem = new SalesItem();
         newItem.setTitle(dto.getTitle());
         newItem.setDescription(dto.getDescription());
         newItem.setMinPriceWanted(dto.getMinPriceWanted());
-        newItem.setWriter(dto.getWriter());
-        newItem.setPassword(dto.getPassword());
         newItem.setStatus("판매중");
+        newItem.setUser(user);
         newItem = salesItemRepository.save(newItem);
+        System.out.println(newItem.getUser());
 
     }
 

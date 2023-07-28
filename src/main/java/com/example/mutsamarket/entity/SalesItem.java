@@ -42,4 +42,8 @@ public class SalesItem extends BaseEntity {
     @JoinColumn(name = "itemId")
     @ToString.Exclude
     private List<Negotiation> negotiations = new ArrayList<>();
+
+    @ManyToOne
+    @ToString.Exclude
+    private UserEntity user;
 }
