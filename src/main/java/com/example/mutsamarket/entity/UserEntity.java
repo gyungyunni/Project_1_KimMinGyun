@@ -31,4 +31,8 @@ public class UserEntity {
     @OneToMany
     @JoinColumn(name = "user_id") //중간 생기는 테이블 없애기 위해서
     private List<SalesItem> salesItems = new ArrayList<>();
+
+    @OneToMany
+    @JoinColumn(name = "user_id") //중간 생기는 테이블 없애기 위해서
+    private List<SalesItem> comments = new ArrayList<>();
 }
