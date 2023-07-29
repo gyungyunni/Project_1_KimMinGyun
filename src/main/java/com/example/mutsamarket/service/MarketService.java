@@ -50,8 +50,7 @@ public class MarketService {
         newItem.setUser(user);
         newItem = salesItemRepository.save(newItem);
 
-        salesItemRepository.findAll().forEach(System.out::println);
-        userRepository.findAll().forEach(System.out::println);
+        // salesItemRepository.findAll().forEach(System.out::println); //결과 보기위해서
 
     }
 
@@ -78,7 +77,6 @@ public class MarketService {
             SalesItemReadDto salesItemDto = SalesItemReadDto.fromEntity(salesItem);
             salesItemReadDtoList.add(salesItemDto);
         }
-
         return salesItemReadDtoList;
 
     }
@@ -99,7 +97,11 @@ public class MarketService {
             Long itemId,
             SalesItemEnrollDto dto
     ) {
-        Optional<SalesItem> optionalSalesItem = salesItemRepository.findByWriterAndPasswordAndId(dto.getWriter(), dto.getPassword(), itemId);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        Optional<SalesItem> optionalSalesItem = salesItemRepository.findByItemIdAndUsername(itemId, username);
+
         if (optionalSalesItem.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
@@ -109,18 +111,20 @@ public class MarketService {
             updateItem.setDescription(dto.getDescription());
             updateItem.setMinPriceWanted(dto.getMinPriceWanted());
             salesItemRepository.save(updateItem);
+
         }
     }
 
-    public SalesItemEnrollDto updateMarketImage(String writer, String password, MultipartFile Image, Long id) {
-        Optional<SalesItem> optionalMarket = salesItemRepository.findByWriterAndPasswordAndId(writer, password, id);
+    public SalesItemEnrollDto updateMarketImage(MultipartFile Image, Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        Optional<SalesItem> optionalMarket = salesItemRepository.findByItemIdAndUsername(id, username);
         if (optionalMarket.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        SalesItem salesItem = optionalMarket.get();
-        if (!(password.equals(salesItem.getPassword()))) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        } else {
+        else {
+            SalesItem salesItem = optionalMarket.get();
             // 2-1. 폴더만 만드는 과정
             String profileDir = String.format("media/%d/", id);
             log.info(profileDir);
@@ -167,7 +171,6 @@ public class MarketService {
         if (optionalSalesItem.isPresent()) {
             // DTO로 전환 후 반환
             salesItemRepository.delete(optionalSalesItem.get());
-            // 아니면 404
             return true;
         } else return false;
 

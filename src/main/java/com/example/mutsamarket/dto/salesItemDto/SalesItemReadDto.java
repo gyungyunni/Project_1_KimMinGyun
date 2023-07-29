@@ -17,7 +17,7 @@ public class SalesItemReadDto {
     {
         SalesItemReadDto dto = new SalesItemReadDto();
         dto.setTitle(entity.getTitle());
-        dto.setDescription(entity.getWriter());
+        dto.setDescription(entity.getDescription());
         dto.setMinPriceWanted(entity.getMinPriceWanted());
         dto.setStatus(entity.getStatus());
         return dto;

@@ -79,11 +79,9 @@ public class ApiController {
     )
     public SalesItemEnrollDto updateImage(
                                  @PathVariable("itemId") Long id,
-                                 @RequestParam("writer") String writer,
-                                 @RequestParam("password") String password,
                                  @RequestParam("image") MultipartFile Image
     ){
-        return marketService.updateMarketImage(writer,password, Image , id);
+        return marketService.updateMarketImage(Image , id);
     }
     @DeleteMapping("/items/{itemId}")
     public ResponseEntity<Map<String, String>> deleteItem(
