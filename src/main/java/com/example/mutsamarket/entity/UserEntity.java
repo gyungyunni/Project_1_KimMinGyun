@@ -28,11 +28,11 @@ public class UserEntity {
     // 토큰 발행후 들어간다.
     private String token; // 토큰
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id") //중간 생기는 테이블 없애기 위해서
     private List<SalesItem> salesItems = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id") //중간 생기는 테이블 없애기 위해서
-    private List<SalesItem> comments = new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
 }

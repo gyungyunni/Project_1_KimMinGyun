@@ -51,6 +51,7 @@ public class MarketService {
         newItem = salesItemRepository.save(newItem);
 
         // salesItemRepository.findAll().forEach(System.out::println); //결과 보기위해서
+        // userRepository.findAll().forEach(System.out::println);
 
     }
 

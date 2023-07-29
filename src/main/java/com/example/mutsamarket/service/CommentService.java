@@ -4,14 +4,18 @@ import com.example.mutsamarket.dto.commentDto.CommentEnrollDto;
 import com.example.mutsamarket.dto.commentDto.CommentsReadDto;
 import com.example.mutsamarket.dto.commentDto.ReplyDto;
 import com.example.mutsamarket.entity.Comment;
+import com.example.mutsamarket.entity.UserEntity;
 import com.example.mutsamarket.repository.CommentRepository;
 import com.example.mutsamarket.repository.SalesItemRepository;
+import com.example.mutsamarket.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -23,15 +27,22 @@ import java.util.Optional;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final SalesItemRepository salesItemRepository;
+    private final UserRepository userRepository;
 
     public void enrollComment(CommentEnrollDto dto, Long itemId) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String check = authentication.getName();
+        Optional<UserEntity> optionalUser = userRepository.findByUsername(check);
+        UserEntity user = optionalUser.get();
+
         Comment newComment = new Comment();
-        newComment.setWriter(dto.getWriter());
-        newComment.setPassword(dto.getPassword());
         newComment.setContent(dto.getContent());
+        newComment.setUser(user);
         newComment.setSalesItem(salesItemRepository.findById(itemId));
         newComment = commentRepository.save(newComment);
+
+        // userRepository.findAll().forEach(System.out::println);
 
     }
 
@@ -43,55 +54,59 @@ public class CommentService {
         return commentsPage.map(CommentsReadDto::fromEntity);
     }
 
-    public void updateComment(
-            Long itemId,
-            Long id,
-            CommentEnrollDto dto
-    ) {
-        // 아니면 로직 진행
-        Optional<Comment> optionalComment = commentRepository.findBySalesItemIdAndIdAndWriterAndPassword(itemId, id,  dto.getWriter(), dto.getPassword());
+//    public void updateComment(
+//            Long itemId,
+//            Long id,
+//            CommentEnrollDto dto
+//    ) {
+//        // 아니면 로직 진행
+//        Optional<Comment> optionalComment = commentRepository.findBySalesItemIdAndIdAndWriterAndPassword(itemId, id,  dto.getWriter(), dto.getPassword());
+//
+//        if (optionalComment.isEmpty()) {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+//        }
+//        Comment updateComment = optionalComment.get();
+//        updateComment.setContent(dto.getContent());
+//        updateComment = commentRepository.save(updateComment);
+//
+//    }
+//
+//    public int addReply(
+//            Long itemId,
+//            Long commentId,
+//            ReplyDto dto
+//    ){
+//        Comment co = commentRepository.findBySalesItemIdAndId(itemId, commentId);
+//        if(co.getReply() == null) {
+//
+//            Comment comment = commentRepository.findBySalesItemIdAndId(itemId, commentId);
+//            comment.setReply(dto.getReply());
+//            comment = commentRepository.save(comment);
+//
+//            return 1;
+//        }
+//        if(salesItemRepository.findById(itemId).getWriter().equals(dto.getWriter())) {
+//
+//            Comment comment = commentRepository.findBySalesItemIdAndId(itemId, commentId);
+//            comment.setReply(dto.getReply());
+//            comment = commentRepository.save(comment);
+//            return 2;
+//        }
+//        else return 0;
+//    }
 
-        if (optionalComment.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-        Comment updateComment = optionalComment.get();
-        updateComment.setContent(dto.getContent());
-        updateComment = commentRepository.save(updateComment);
+    public boolean deleteComment(Long itemId, Long id) {
 
-    }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
 
-    public int addReply(
-            Long itemId,
-            Long commentId,
-            ReplyDto dto
-    ){
-        Comment co = commentRepository.findBySalesItemIdAndId(itemId, commentId);
-        if(co.getReply() == null) {
-
-            Comment comment = commentRepository.findBySalesItemIdAndId(itemId, commentId);
-            comment.setReply(dto.getReply());
-            comment = commentRepository.save(comment);
-
-            return 1;
-        }
-        if(salesItemRepository.findById(itemId).getWriter().equals(dto.getWriter())) {
-
-            Comment comment = commentRepository.findBySalesItemIdAndId(itemId, commentId);
-            comment.setReply(dto.getReply());
-            comment = commentRepository.save(comment);
-            return 2;
-        }
-        else return 0;
-    }
-
-    public boolean deleteComment(Long itemId, Long id, String writer, String password) {
         Optional<Comment> optionalComment
-                = commentRepository.findBySalesItemIdAndIdAndWriterAndPassword(itemId,id, writer, password);
+                = commentRepository.findByCommentIdAndSalesItemIdAndUsername(id, itemId, username);
 
         if (optionalComment.isPresent()) {
-            // DTO로 전환 후 반환
             commentRepository.delete(optionalComment.get());
-            // 아니면 404
+
+            // userRepository.findAll().forEach(System.out::println); //삭제될때 user 엔티티에서도 잘 삭제되나 확인용
             return true;
         } else return false;
 

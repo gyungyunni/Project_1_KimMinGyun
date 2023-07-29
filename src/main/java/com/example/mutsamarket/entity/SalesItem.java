@@ -33,7 +33,7 @@ public class SalesItem extends BaseEntity {
 
     private String password;
 
-    @OneToMany(fetch = FetchType.EAGER) //1대N 관계
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE) //1대N 관계
     @JoinColumn(name = "itemId") //itemId 속성이 CommentEntity에 생기게됨
     @ToString.Exclude
     private List<Comment> comments = new ArrayList<>(); //NullPointExeption 방지
@@ -43,7 +43,7 @@ public class SalesItem extends BaseEntity {
     @ToString.Exclude
     private List<Negotiation> negotiations = new ArrayList<>();
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}) //판매글을 작성, 삭제하면 user 엔티티에서도 반영되게
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}) //판매글을 작성, 삭제하면 user 엔티티에서도 반영되게
     @ToString.Exclude
     private UserEntity user;
 }
