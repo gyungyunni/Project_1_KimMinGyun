@@ -54,23 +54,27 @@ public class CommentService {
         return commentsPage.map(CommentsReadDto::fromEntity);
     }
 
-//    public void updateComment(
-//            Long itemId,
-//            Long id,
-//            CommentEnrollDto dto
-//    ) {
-//        // 아니면 로직 진행
-//        Optional<Comment> optionalComment = commentRepository.findBySalesItemIdAndIdAndWriterAndPassword(itemId, id,  dto.getWriter(), dto.getPassword());
-//
-//        if (optionalComment.isEmpty()) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-//        }
-//        Comment updateComment = optionalComment.get();
-//        updateComment.setContent(dto.getContent());
-//        updateComment = commentRepository.save(updateComment);
-//
-//    }
-//
+    public void updateComment(
+            Long itemId,
+            Long id,
+            CommentEnrollDto dto
+    ) {
+        // 아니면 로직 진행
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        Optional<Comment> optionalComment
+                = commentRepository.findByCommentIdAndSalesItemIdAndUsername(id, itemId, username);
+
+        if (optionalComment.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        Comment updateComment = optionalComment.get();
+        updateComment.setContent(dto.getContent());
+        updateComment = commentRepository.save(updateComment);
+
+    }
+
 //    public int addReply(
 //            Long itemId,
 //            Long commentId,

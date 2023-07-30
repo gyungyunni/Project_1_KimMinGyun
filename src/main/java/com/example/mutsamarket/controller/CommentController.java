@@ -45,21 +45,21 @@ public class CommentController {
         return commentService.readCommentsPage(page, itemId);
     }
 
-//    @PutMapping("/items/{itemId}/comments/{commentId}")
-//    public ResponseEntity<Map<String, String>> updateComment(
-//            @PathVariable("itemId") Long itemId,
-//            @PathVariable("commentId") Long commentId,
-//            @RequestBody CommentEnrollDto dto
-//    ) {
-//        commentService.updateComment(itemId, commentId, dto);
-//
-//        log.info(dto.toString());
-//        Map<String, String> responseBody = new HashMap<>();
-//        responseBody.put("message", "댓글이 수정되었습니다.");
-//
-//        return ResponseEntity.ok(responseBody);
-//    }
-//
+    @PutMapping("/items/{itemId}/comments/{commentId}")
+    public ResponseEntity<Map<String, String>> updateComment(
+            @PathVariable("itemId") Long itemId,
+            @PathVariable("commentId") Long commentId,
+            @RequestBody CommentEnrollDto dto
+    ) {
+        commentService.updateComment(itemId, commentId, dto);
+
+        log.info(dto.toString());
+        Map<String, String> responseBody = new HashMap<>();
+        responseBody.put("message", "댓글이 수정되었습니다.");
+
+        return ResponseEntity.ok(responseBody);
+    }
+
 //    @PutMapping("/items/{itemId}/comments/{commentId}/reply")
 //    public ResponseEntity<Map<String, String>> updateComment(
 //            @PathVariable("itemId") Long itemId,
