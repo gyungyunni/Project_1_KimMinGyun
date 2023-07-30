@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
     Page<Comment> findAllBySalesItemId(Long itemId, Pageable pageable);
 
-    Optional<Comment> findBySalesItemIdAndIdAndWriterAndPassword(Long itemId, Long id, String writer, String password);
+    Comment findBySalesItemIdAndId(Long itemId, Long id);
 
     @Query("SELECT c FROM Comment c " +
             "JOIN c.salesItem si " +

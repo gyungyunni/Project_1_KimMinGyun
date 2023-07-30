@@ -75,29 +75,35 @@ public class CommentService {
 
     }
 
-//    public int addReply(
-//            Long itemId,
-//            Long commentId,
-//            ReplyDto dto
-//    ){
-//        Comment co = commentRepository.findBySalesItemIdAndId(itemId, commentId);
-//        if(co.getReply() == null) {
-//
-//            Comment comment = commentRepository.findBySalesItemIdAndId(itemId, commentId);
-//            comment.setReply(dto.getReply());
-//            comment = commentRepository.save(comment);
-//
-//            return 1;
-//        }
-//        if(salesItemRepository.findById(itemId).getWriter().equals(dto.getWriter())) {
-//
-//            Comment comment = commentRepository.findBySalesItemIdAndId(itemId, commentId);
-//            comment.setReply(dto.getReply());
-//            comment = commentRepository.save(comment);
-//            return 2;
-//        }
-//        else return 0;
-//    }
+    public int addReply(
+            Long itemId,
+            Long commentId,
+            ReplyDto dto
+    ){
+        Comment co = commentRepository.findBySalesItemIdAndId(itemId, commentId);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        if(co.getReply() == null) {
+
+            Optional<Comment> optionalComment
+                    = commentRepository.findByCommentIdAndSalesItemIdAndUsername(commentId, itemId, username);
+
+            Comment comment = optionalComment.get();
+
+            comment.setReply(dto.getReply());
+            comment = commentRepository.save(comment);
+
+            return 1;
+        }
+        if(salesItemRepository.findById(itemId).getUser().getUsername().equals(username)) {
+
+            Comment comment = commentRepository.findBySalesItemIdAndId(itemId, commentId);
+            comment.setReply(dto.getReply());
+            comment = commentRepository.save(comment);
+            return 2;
+        }
+        else return 0;
+    }
 
     public boolean deleteComment(Long itemId, Long id) {
 

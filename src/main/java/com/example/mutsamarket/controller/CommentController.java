@@ -2,6 +2,7 @@ package com.example.mutsamarket.controller;
 
 import com.example.mutsamarket.dto.commentDto.CommentEnrollDto;
 import com.example.mutsamarket.dto.commentDto.CommentsReadDto;
+import com.example.mutsamarket.dto.commentDto.ReplyDto;
 import com.example.mutsamarket.service.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -60,32 +61,31 @@ public class CommentController {
         return ResponseEntity.ok(responseBody);
     }
 
-//    @PutMapping("/items/{itemId}/comments/{commentId}/reply")
-//    public ResponseEntity<Map<String, String>> updateComment(
-//            @PathVariable("itemId") Long itemId,
-//            @PathVariable("commentId") Long commentId,
-//            @RequestBody ReplyDto dto
-//    ) {
-//        if(commentService.addReply(itemId, commentId, dto) == 1) {
-//
-//            log.info(dto.toString());
-//            Map<String, String> responseBody = new HashMap<>();
-//            responseBody.put("message", "댓글에 답변이 추가되었습니다.");
-//
-//            return ResponseEntity.ok(responseBody);
-//        }
-//        if(commentService.addReply(itemId, commentId, dto) == 2) {
-//
-//            log.info(dto.toString());
-//            Map<String, String> responseBody = new HashMap<>();
-//            responseBody.put("message", "답변이 수정되었습니다.");
-//
-//            return ResponseEntity.ok(responseBody);
-//        }
-//        else throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-//    }
-//
-//
+    @PutMapping("/items/{itemId}/comments/{commentId}/reply")
+    public ResponseEntity<Map<String, String>> Reply(
+            @PathVariable("itemId") Long itemId,
+            @PathVariable("commentId") Long commentId,
+            @RequestBody ReplyDto dto
+    ) {
+        if(commentService.addReply(itemId, commentId, dto) == 1) {
+
+            log.info(dto.toString());
+            Map<String, String> responseBody = new HashMap<>();
+            responseBody.put("message", "댓글에 답변이 추가되었습니다.");
+
+            return ResponseEntity.ok(responseBody);
+        }
+        if(commentService.addReply(itemId, commentId, dto) == 2) {
+
+            log.info(dto.toString());
+            Map<String, String> responseBody = new HashMap<>();
+            responseBody.put("message", "답변이 수정되었습니다.");
+
+            return ResponseEntity.ok(responseBody);
+        }
+        else throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+
     @DeleteMapping("/items/{itemId}/comments/{commentId}")
     public ResponseEntity<Map<String, String>> deleteComment(
             @PathVariable("itemId") Long itemId,
