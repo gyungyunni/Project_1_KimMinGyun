@@ -29,11 +29,10 @@ public class CommentService {
     private final SalesItemRepository salesItemRepository;
     private final UserRepository userRepository;
 
-    public void enrollComment(CommentEnrollDto dto, Long itemId) {
+    public void enrollComment(CommentEnrollDto dto, Long itemId, Authentication authentication) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String check = authentication.getName();
-        Optional<UserEntity> optionalUser = userRepository.findByUsername(check);
+        String loginUser = authentication.getName();
+        Optional<UserEntity> optionalUser = userRepository.findByUsername(loginUser);
         UserEntity user = optionalUser.get();
 
         Comment newComment = new Comment();
@@ -57,10 +56,10 @@ public class CommentService {
     public void updateComment(
             Long itemId,
             Long id,
-            CommentEnrollDto dto
+            CommentEnrollDto dto,
+            Authentication authentication
     ) {
-        // 아니면 로직 진행
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         String username = authentication.getName();
 
         Optional<Comment> optionalComment
@@ -78,10 +77,11 @@ public class CommentService {
     public int addReply(
             Long itemId,
             Long commentId,
-            ReplyDto dto
+            ReplyDto dto,
+            Authentication authentication
     ){
         Comment co = commentRepository.findBySalesItemIdAndId(itemId, commentId);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         String username = authentication.getName();
         if(co.getReply() == null) {
 
@@ -105,9 +105,8 @@ public class CommentService {
         else return 0;
     }
 
-    public boolean deleteComment(Long itemId, Long id) {
+    public boolean deleteComment(Long itemId, Long id, Authentication authentication) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
         Optional<Comment> optionalComment

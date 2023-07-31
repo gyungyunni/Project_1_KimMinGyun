@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -26,9 +27,10 @@ public class CommentController {
     @PostMapping("/items/{itemId}/comments")
     public ResponseEntity<Map<String, String>> enroll(
             @Valid @RequestBody CommentEnrollDto dto,
-            @PathVariable("itemId") Long itemId
+            @PathVariable("itemId") Long itemId,
+            Authentication authentication
     ) {
-        commentService.enrollComment(dto,itemId);
+        commentService.enrollComment(dto, itemId, authentication);
 
         log.info(dto.toString());
         Map<String, String> responseBody = new HashMap<>();
@@ -50,9 +52,10 @@ public class CommentController {
     public ResponseEntity<Map<String, String>> updateComment(
             @PathVariable("itemId") Long itemId,
             @PathVariable("commentId") Long commentId,
-            @RequestBody CommentEnrollDto dto
+            @RequestBody CommentEnrollDto dto,
+            Authentication authentication
     ) {
-        commentService.updateComment(itemId, commentId, dto);
+        commentService.updateComment(itemId, commentId, dto, authentication);
 
         log.info(dto.toString());
         Map<String, String> responseBody = new HashMap<>();
@@ -65,9 +68,10 @@ public class CommentController {
     public ResponseEntity<Map<String, String>> Reply(
             @PathVariable("itemId") Long itemId,
             @PathVariable("commentId") Long commentId,
-            @RequestBody ReplyDto dto
+            @RequestBody ReplyDto dto,
+            Authentication authentication
     ) {
-        if(commentService.addReply(itemId, commentId, dto) == 1) {
+        if(commentService.addReply(itemId, commentId, dto, authentication) == 1) {
 
             log.info(dto.toString());
             Map<String, String> responseBody = new HashMap<>();
@@ -75,7 +79,7 @@ public class CommentController {
 
             return ResponseEntity.ok(responseBody);
         }
-        if(commentService.addReply(itemId, commentId, dto) == 2) {
+        if(commentService.addReply(itemId, commentId, dto, authentication) == 2) {
 
             log.info(dto.toString());
             Map<String, String> responseBody = new HashMap<>();
@@ -89,9 +93,10 @@ public class CommentController {
     @DeleteMapping("/items/{itemId}/comments/{commentId}")
     public ResponseEntity<Map<String, String>> deleteComment(
             @PathVariable("itemId") Long itemId,
-            @PathVariable("commentId") Long commentId
+            @PathVariable("commentId") Long commentId,
+            Authentication authentication
     ) {
-        if (commentService.deleteComment(itemId, commentId)) {
+        if (commentService.deleteComment(itemId, commentId, authentication)) {
 
             Map<String, String> responseBody = new HashMap<>();
             responseBody.put("message", "댓글을 삭제했습니다.");

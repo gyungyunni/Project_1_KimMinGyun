@@ -2,7 +2,7 @@ package com.example.mutsamarket.controller;
 
 import com.example.mutsamarket.dto.salesItemDto.SalesItemEnrollDto;
 import com.example.mutsamarket.dto.salesItemDto.SalesItemReadDto;
-import com.example.mutsamarket.service.MarketService;
+import com.example.mutsamarket.service.SalesItemService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,15 +22,15 @@ import java.util.Map;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class ApiController {
-    private final MarketService marketService;
+public class SalesItemController {
+    private final SalesItemService salesItemService;
 
     @PostMapping("/items")
     public ResponseEntity<Map<String, String>> enroll(
             @Valid @RequestBody SalesItemEnrollDto dto,
             Authentication authentication
     ) {
-        marketService.enrollSalesItem(dto, authentication);
+        salesItemService.enrollSalesItem(dto, authentication);
 
         log.info(dto.toString());
         Map<String, String> responseBody = new HashMap<>();
@@ -43,11 +43,11 @@ public class ApiController {
     public SalesItemReadDto read(
             @PathVariable("itemId") Long itemId
     ){
-        return marketService.readItem(itemId);
+        return salesItemService.readItem(itemId);
     }
     @GetMapping("/items/all")
     public List<SalesItemReadDto> readAll(){
-        return marketService.readItemAll();
+        return salesItemService.readItemAll();
     }
 
     @GetMapping("/items")
@@ -55,7 +55,7 @@ public class ApiController {
             @RequestParam(value = "page", defaultValue = "0") Long page,
             @RequestParam(value = "limit", defaultValue = "20") Long limit
     ){
-        return marketService.readPageItem(page, limit);
+        return salesItemService.readPageItem(page, limit);
     }
 
     @PutMapping("/items/{itemId}")
@@ -64,7 +64,7 @@ public class ApiController {
             @RequestBody SalesItemEnrollDto dto,
             Authentication authentication
     ) {
-        marketService.updateSalesItem(itemId, dto, authentication);
+        salesItemService.updateSalesItem(itemId, dto, authentication);
 
         log.info(dto.toString());
         Map<String, String> responseBody = new HashMap<>();
@@ -82,14 +82,14 @@ public class ApiController {
                                  @RequestParam("image") MultipartFile Image,
                                  Authentication authentication
     ){
-        return marketService.updateMarketImage(Image , id, authentication);
+        return salesItemService.updateMarketImage(Image , id, authentication);
     }
     @DeleteMapping("/items/{itemId}")
     public ResponseEntity<Map<String, String>> deleteItem(
             @PathVariable("itemId") Long itemId,
             Authentication authentication
     ) {
-        if (marketService.deleteItem(itemId, authentication)) {
+        if (salesItemService.deleteItem(itemId, authentication)) {
 
             Map<String, String> responseBody = new HashMap<>();
             responseBody.put("message", "물품을 삭제했습니다.");

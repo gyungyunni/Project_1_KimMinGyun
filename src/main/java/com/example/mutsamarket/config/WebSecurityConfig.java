@@ -41,7 +41,8 @@ public class WebSecurityConfig {
                                 )
                                 .permitAll()
                                 .requestMatchers(
-                                        HttpMethod.GET, "/api/mutsamarket/items", "/api/mutsamarket/items/all", "/api/mutsamarket/items/{itemId}"
+                                        HttpMethod.GET, "/api/mutsamarket/items", "/api/mutsamarket/items/all", "/api/mutsamarket/items/{itemId}",
+                                                         "/api/mutsamarket/items/{itemId}/comments"
                                 ).permitAll()
                                 .anyRequest()
                                 .authenticated()
