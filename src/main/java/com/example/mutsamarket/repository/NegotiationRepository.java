@@ -17,8 +17,7 @@ public interface NegotiationRepository extends JpaRepository<Negotiation, Intege
     @Query("SELECT n FROM Negotiation n " +
             "JOIN n.salesItem si " +
             "JOIN n.user u " +
-            "WHERE n.id = :negotiationId " +
-            "AND si.id = :itemId " +
+            "WHERE si.id = :itemId " +
             "AND u.username = :username")
     Page<Negotiation> findAllBySalesItemIdAndUsername(
             @Param("itemId") Long itemId,
@@ -32,7 +31,8 @@ public interface NegotiationRepository extends JpaRepository<Negotiation, Intege
             "WHERE n.id = :negotiationId " +
             "AND si.id = :itemId " +
             "AND u.username = :username")
-    Optional<Negotiation> findBySalesItemIdAndUsername(
+    Optional<Negotiation> findByNegotiationIdAndSalesItemIdAndUsername(
+            @Param("negotiationId") Long negotiationId,
             @Param("itemId") Long itemId,
             @Param("username") String username
     );
@@ -41,6 +41,5 @@ public interface NegotiationRepository extends JpaRepository<Negotiation, Intege
             "JOIN n.user u " +
             "WHERE u.username = :username ")
     Optional<Negotiation> findByUsername(@Param("username") String username);
-
 
 }
