@@ -1,6 +1,5 @@
 package com.example.mutsamarket.controller;
 
-import com.example.mutsamarket.dto.negotiationDto.NegotiationDeleteDto;
 import com.example.mutsamarket.dto.negotiationDto.NegotiationEnrollDto;
 import com.example.mutsamarket.dto.negotiationDto.NegotiationReadDto;
 import com.example.mutsamarket.service.NegotiationService;

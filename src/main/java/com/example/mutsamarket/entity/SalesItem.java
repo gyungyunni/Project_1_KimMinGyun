@@ -29,10 +29,6 @@ public class SalesItem extends BaseEntity {
 
     private String status;
 
-    private String writer;
-
-    private String password;
-
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE) //1대N 관계
     @JoinColumn(name = "itemId") //itemId 속성이 CommentEntity에 생기게됨
     @ToString.Exclude

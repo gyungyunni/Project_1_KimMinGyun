@@ -17,10 +17,6 @@ public class Comment extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String writer;
-
-    private String password;
-
     private String content;
 
     private String reply;

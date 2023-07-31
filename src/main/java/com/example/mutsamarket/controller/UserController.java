@@ -2,6 +2,7 @@ package com.example.mutsamarket.controller;
 
 import com.example.mutsamarket.entity.CustomUserDetails;
 import com.example.mutsamarket.entity.UserEntity;
+import com.example.mutsamarket.jwt.JwtTokenDto;
 import com.example.mutsamarket.jwt.JwtTokenUtils;
 import com.example.mutsamarket.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -10,10 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -40,27 +38,30 @@ public class UserController {
     public String myProfile(
             Authentication authentication
     ) {
-        // 사용자 정보 회수 Repository
-        // JWT: 사용자가 누구인지 사용자 Entity를 기준으로 정확하게 판단할 수 있어야 한다.
-        String check = authentication.getName();
-        UserDetails userDetailsCheck
-                = manager.loadUserByUsername(check);
-        String token = jwtTokenUtils.generateToken(userDetailsCheck);
-        log.info(token);
-
-        // repository에 token 저장
-        Optional<UserEntity> optionalUser = repository.findByUsername(check);
-        UserEntity entity = optionalUser.get();
-        entity.setToken(token);
-        repository.save(entity);
-
-//      log.info(((User) authentication.getPrincipal()).getUsername());
         CustomUserDetails userDetails
                 = (CustomUserDetails) authentication.getPrincipal();
         log.info(userDetails.getUsername());
         log.info(userDetails.getEmail());
-//        log.info(SecurityContextHolder.getContext().getAuthentication().getName());
+//      log.info(SecurityContextHolder.getContext().getAuthentication().getName());
+//      log.info(((User) authentication.getPrincipal()).getUsername());
         return "my-profile";
+    }
+    @PostMapping("/token")
+    @ResponseBody
+    public JwtTokenDto makeToken(Authentication authentication){
+        String check = authentication.getName();
+        UserDetails userDetailsCheck = manager.loadUserByUsername(check);
+        String token = jwtTokenUtils.generateToken(userDetailsCheck);
+
+        // repository에 token 저장
+        Optional<UserEntity> optionalUser = repository.findByUsername(check);
+        UserEntity entity = optionalUser.get();
+        // entity.setToken(token);
+        repository.save(entity);
+
+        JwtTokenDto dto = new JwtTokenDto();
+        dto.setToken(token);
+        return dto;
     }
     @GetMapping("/register")
     public String registerForm() {

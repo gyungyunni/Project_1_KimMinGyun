@@ -4,14 +4,18 @@ import com.example.mutsamarket.dto.negotiationDto.NegotiationEnrollDto;
 import com.example.mutsamarket.dto.negotiationDto.NegotiationReadDto;
 import com.example.mutsamarket.entity.Negotiation;
 import com.example.mutsamarket.entity.SalesItem;
+import com.example.mutsamarket.entity.UserEntity;
 import com.example.mutsamarket.repository.NegotiationRepository;
 import com.example.mutsamarket.repository.SalesItemRepository;
+import com.example.mutsamarket.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -25,31 +29,44 @@ public class NegotiationService {
 
     private final NegotiationRepository negotiationRepository;
     private final SalesItemRepository salesItemRepository;
+    private final UserRepository userRepository;
     public void enrollNegotiation(NegotiationEnrollDto dto , Long itemId) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String check = authentication.getName();
+        Optional<UserEntity> optionalUser = userRepository.findByUsername(check);
+        UserEntity user = optionalUser.get();
+
         Negotiation newNego = new Negotiation();
-        newNego.setWriter(dto.getWriter());
-        newNego.setPassword(dto.getPassword());
         newNego.setSuggestedPrice(dto.getSuggestedPrice());
         newNego.setSalesItem(salesItemRepository.findById(itemId));
         newNego.setStatus("제안");
+        newNego.setUser(user);
         newNego = negotiationRepository.save(newNego);
     }
 
-    public Page<NegotiationReadDto> readNegoPage(Long page, Long itemId, String writer, String password) {
+    public Page<NegotiationReadDto> readNegoPage(Long page, Long itemId) {
+
+        // 아니면 로직 진행
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
         Pageable pageable = PageRequest.of(Math.toIntExact(page), 25);
 
-        // 대상 물품의 주인
-        if(negotiationRepository.findTopBySalesItemWriterAndSalesItemPassword(writer,password).isPresent()) {
+        // 대상 물품의 주인, 모든 구매제안 확인 가능
+        // salesItem 레포지토리에 판매 아이템 id와 현재 로그인한 사용자의 username이 일차하는게 있다면
+        // == 조회하려는 사람이 현재 로그인한 사용자이고, 판매 게시글도 있다는 뜻
+        if(salesItemRepository.findByItemIdAndUsername(itemId,username).isPresent()) {
+            // 그렇다면 그 판매 아이템에 해당하는 네고들을 다 보여줌
             Page<Negotiation> negoPage
                     = negotiationRepository.findAllBySalesItemId(itemId, pageable);
 
             return negoPage.map(NegotiationReadDto::fromEntity);
         }
-        // 네고 등록한 사용자
-        if(negotiationRepository.findTopByWriterAndPassword(writer,password).isPresent()){
+        // 현재 로그인한 사용자가 네고 등록한 사용자인지, 내가 등록한 네고만 확인이 가능
+        if(negotiationRepository.findByUsername(username).isPresent()){
             Page<Negotiation> negoPage
-                    = negotiationRepository.findAllBySalesItemIdAndWriterAndPassword(itemId, writer,password, pageable);
+                    = negotiationRepository.findAllBySalesItemIdAndUsername(itemId, username , pageable);
 
             return negoPage.map(NegotiationReadDto::fromEntity);
         }
@@ -112,9 +129,13 @@ public class NegotiationService {
         else return 0;
     }
 
-    public boolean deleteNegotiation(Long itemId, Long id, String writer, String password) {
+    public boolean deleteNegotiation(Long itemId, Long id) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
         Optional<Negotiation> optionalNego
-                = negotiationRepository.findBySalesItemIdAndIdAndWriterAndPassword(itemId, Math.toIntExact(id), writer, password);
+                = negotiationRepository.findBySalesItemIdAndUsername(itemId, id, username);
 
         if (optionalNego.isPresent()) {
             // DTO로 전환 후 반환

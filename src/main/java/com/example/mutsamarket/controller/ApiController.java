@@ -1,7 +1,5 @@
 package com.example.mutsamarket.controller;
 
-import com.example.mutsamarket.dto.commentDto.CommentEnrollDto;
-import com.example.mutsamarket.dto.salesItemDto.SalesItemDeleteDto;
 import com.example.mutsamarket.dto.salesItemDto.SalesItemEnrollDto;
 import com.example.mutsamarket.dto.salesItemDto.SalesItemReadDto;
 import com.example.mutsamarket.service.MarketService;

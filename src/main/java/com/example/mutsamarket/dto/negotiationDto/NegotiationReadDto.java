@@ -12,8 +12,9 @@ public class NegotiationReadDto {
     private String status;
 
     public static NegotiationReadDto fromEntity(Negotiation entity) {
+
         NegotiationReadDto dto = new NegotiationReadDto();
-        dto.setId(entity.getId());
+        dto.setId(Math.toIntExact(entity.getId()));
         dto.setSuggestedPrice(entity.getSuggestedPrice());
         dto.setStatus(entity.getStatus());
 

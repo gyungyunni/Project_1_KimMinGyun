@@ -2,15 +2,20 @@ package com.example.mutsamarket.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@NoArgsConstructor
 @Data
-public class UserEntity {
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+@Table(name = "users")
+public class UserEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,4 +40,9 @@ public class UserEntity {
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id") //중간 생기는 테이블 없애기 위해서
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "user_id") //중간 생기는 테이블 없애기 위해서
+    private List<Negotiation> negotiations = new ArrayList<>();
+
 }
