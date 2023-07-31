@@ -2,15 +2,12 @@ package com.example.mutsamarket.service;
 
 import com.example.mutsamarket.dto.salesItemDto.SalesItemEnrollDto;
 import com.example.mutsamarket.dto.salesItemDto.SalesItemReadDto;
-import com.example.mutsamarket.entity.Comment;
-import com.example.mutsamarket.entity.CustomUserDetails;
 import com.example.mutsamarket.entity.SalesItem;
 import com.example.mutsamarket.entity.UserEntity;
 import com.example.mutsamarket.repository.SalesItemRepository;
 import com.example.mutsamarket.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -35,11 +32,10 @@ public class MarketService {
     private final SalesItemRepository salesItemRepository;
     private final UserRepository userRepository;
 
-    public void enrollSalesItem(SalesItemEnrollDto dto) {
+    public void enrollSalesItem(SalesItemEnrollDto dto, Authentication authentication) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String check = authentication.getName();
-        Optional<UserEntity> optionalUser = userRepository.findByUsername(check);
+        String loginUser = authentication.getName();
+        Optional<UserEntity> optionalUser = userRepository.findByUsername(loginUser);
         UserEntity user = optionalUser.get();
 
         SalesItem newItem = new SalesItem();
@@ -96,9 +92,9 @@ public class MarketService {
 
     public void updateSalesItem(
             Long itemId,
-            SalesItemEnrollDto dto
+            SalesItemEnrollDto dto,
+            Authentication authentication
     ) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
         Optional<SalesItem> optionalSalesItem = salesItemRepository.findByItemIdAndUsername(itemId, username);
@@ -116,8 +112,8 @@ public class MarketService {
         }
     }
 
-    public SalesItemEnrollDto updateMarketImage(MultipartFile Image, Long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    public SalesItemEnrollDto updateMarketImage(MultipartFile Image, Long id, Authentication authentication) {
+
         String username = authentication.getName();
 
         Optional<SalesItem> optionalMarket = salesItemRepository.findByItemIdAndUsername(id, username);
@@ -162,9 +158,8 @@ public class MarketService {
         }
     }
 
-    public boolean deleteItem(Long id) {
+    public boolean deleteItem(Long id, Authentication authentication) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
         Optional<SalesItem> optionalSalesItem = salesItemRepository.findByItemIdAndUsername(id, username);

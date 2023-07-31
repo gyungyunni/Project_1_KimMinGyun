@@ -43,9 +43,4 @@ public interface NegotiationRepository extends JpaRepository<Negotiation, Intege
     Optional<Negotiation> findByUsername(@Param("username") String username);
 
 
-    Optional<Negotiation> findBySalesItemIdAndIdAndSalesItemWriterAndSalesItemPassword(Long salesItem_id, Integer id, String writer, String password);
-
-    Optional<Negotiation> findBySalesItemIdAndIdAndWriterAndPasswordAndStatus(Long salesItem_id,Integer id, String writer, String password, String status);
-
-    List<Negotiation> findAllBySalesItemIdAndIdNot(Long salesItem_id, Integer id);
 }

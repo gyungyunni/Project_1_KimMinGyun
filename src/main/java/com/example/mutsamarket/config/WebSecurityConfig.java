@@ -37,17 +37,12 @@ public class WebSecurityConfig {
                                 // permitAll() == 누가 요청해도 허가한다.
                                 .requestMatchers(
                                         "/token/issue",
-                                        "/users/login"
+                                        "/token/register"
                                 )
                                 .permitAll()
                                 .requestMatchers(
                                         HttpMethod.GET, "/api/mutsamarket/items", "/api/mutsamarket/items/all", "/api/mutsamarket/items/{itemId}"
                                 ).permitAll()
-                                .requestMatchers(
-                                        "/",
-                                        "/users/register"
-                                )
-                                .anonymous()
                                 .anyRequest()
                                 .authenticated()
                 )

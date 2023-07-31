@@ -1,6 +1,5 @@
 package com.example.mutsamarket.jwt;
 
-import com.example.mutsamarket.entity.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,7 +23,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     public JwtTokenFilter(JwtTokenUtils jwtTokenUtils) {
         this.jwtTokenUtils = jwtTokenUtils;
     }
-
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -71,8 +69,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
-
-
 
 
 

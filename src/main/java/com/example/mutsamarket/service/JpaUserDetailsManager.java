@@ -1,7 +1,7 @@
 package com.example.mutsamarket.service;
 
 
-import com.example.mutsamarket.entity.CustomUserDetails;
+import com.example.mutsamarket.jwt.CustomUserDetails;
 import com.example.mutsamarket.entity.UserEntity;
 import com.example.mutsamarket.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;

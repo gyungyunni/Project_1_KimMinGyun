@@ -1,6 +1,6 @@
 package com.example.mutsamarket.controller;
 
-import com.example.mutsamarket.entity.CustomUserDetails;
+import com.example.mutsamarket.jwt.CustomUserDetails;
 import com.example.mutsamarket.entity.UserEntity;
 import com.example.mutsamarket.jwt.JwtTokenDto;
 import com.example.mutsamarket.jwt.JwtTokenUtils;
@@ -48,7 +48,7 @@ public class UserController {
     }
     @PostMapping("/token")
     @ResponseBody
-    public JwtTokenDto makeToken(Authentication authentication){
+    public JwtTokenDto makeToken( Authentication authentication){
         String check = authentication.getName();
         UserDetails userDetailsCheck = manager.loadUserByUsername(check);
         String token = jwtTokenUtils.generateToken(userDetailsCheck);

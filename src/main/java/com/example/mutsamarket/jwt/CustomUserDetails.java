@@ -1,5 +1,6 @@
-package com.example.mutsamarket.entity;
+package com.example.mutsamarket.jwt;
 
+import com.example.mutsamarket.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,6 +9,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+
+/*
+지금까지는 UserDetails 구현체를 사용중
+우리가 다루는 사용자 정보에 추가적인 데이터를 포함하고 싶으면 UserDetails 인터페이스를 구현하는 클레스를 직접 구현
+ */
 
 @Builder
 @NoArgsConstructor

@@ -10,10 +10,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,9 +27,10 @@ public class ApiController {
 
     @PostMapping("/items")
     public ResponseEntity<Map<String, String>> enroll(
-            @Valid @RequestBody SalesItemEnrollDto dto
+            @Valid @RequestBody SalesItemEnrollDto dto,
+            Authentication authentication
     ) {
-        marketService.enrollSalesItem(dto);
+        marketService.enrollSalesItem(dto, authentication);
 
         log.info(dto.toString());
         Map<String, String> responseBody = new HashMap<>();
@@ -60,9 +61,10 @@ public class ApiController {
     @PutMapping("/items/{itemId}")
     public ResponseEntity<Map<String, String>> updateItem(
             @PathVariable("itemId") Long itemId,
-            @RequestBody SalesItemEnrollDto dto
+            @RequestBody SalesItemEnrollDto dto,
+            Authentication authentication
     ) {
-        marketService.updateSalesItem(itemId, dto);
+        marketService.updateSalesItem(itemId, dto, authentication);
 
         log.info(dto.toString());
         Map<String, String> responseBody = new HashMap<>();
@@ -77,15 +79,17 @@ public class ApiController {
     )
     public SalesItemEnrollDto updateImage(
                                  @PathVariable("itemId") Long id,
-                                 @RequestParam("image") MultipartFile Image
+                                 @RequestParam("image") MultipartFile Image,
+                                 Authentication authentication
     ){
-        return marketService.updateMarketImage(Image , id);
+        return marketService.updateMarketImage(Image , id, authentication);
     }
     @DeleteMapping("/items/{itemId}")
     public ResponseEntity<Map<String, String>> deleteItem(
-            @PathVariable("itemId") Long itemId
+            @PathVariable("itemId") Long itemId,
+            Authentication authentication
     ) {
-        if (marketService.deleteItem(itemId)) {
+        if (marketService.deleteItem(itemId, authentication)) {
 
             Map<String, String> responseBody = new HashMap<>();
             responseBody.put("message", "물품을 삭제했습니다.");
