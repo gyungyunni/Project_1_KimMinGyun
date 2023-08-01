@@ -31,6 +31,7 @@ public class SalesItemEnrollDto {
                 dto.setId(entity.getId());
                 dto.setTitle(entity.getTitle());
                 dto.setDescription(entity.getDescription());
+                dto.setImageUrl(entity.getImageUrl());
                 dto.setMinPriceWanted(entity.getMinPriceWanted());
                 dto.setStatus(entity.getStatus());
                 return dto;
