@@ -1,0 +1,806 @@
+{
+	"info": {
+		"_postman_id": "92b1dadb-9159-4301-adb4-70a6045ac97a",
+		"name": "mutsamarket - jwt",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25240839"
+	},
+	"item": [
+		{
+			"name": "POST /token/register  회원가입",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"mingyun\",\r\n    \"password\": \"1234\",\r\n    \"passwordCheck\": \"1234\",\r\n    \"address\": \"남양주\",\r\n    \"email\": \"mk@naver.com\",\r\n    \"phone\": \"010-1234-5678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/token/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"token",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /token/issue 로그인",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user\",\r\n    \"password\": \"asdf\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/token/issue",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"token",
+						"issue"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /token/issue 로그인한 user check",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtaW5neXVuIiwiaWF0IjoxNjkwNzkzMzEzLCJleHAiOjE2OTA3OTY5MTN9.Plqaj0-leOY-CpHC3xgJ1VaQ379hlIqz1hZp97Pt2DigN7Wfu5BS-GBji_AKwUO4frOKDcRNx-OPif0Ehajafg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/token/check",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"token",
+						"check"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/mutsamarket/items",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtaW5neXVuIiwiaWF0IjoxNjkwODk4MzgyLCJleHAiOjE2OTA5MDE5ODJ9.5EsDv-Yx-q-YHuJImUPU0ait_sIIEEI8P69rM1_uAxXB3kUUZXbPm9jztr67TCrr6fGzRfIuVTtM4QdWmTJHaw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"중고 맥북 팝니다\",\r\n    \"description\": \"2019년 맥북 프로 16인치 모델입니다\",\r\n    \"minPriceWanted\": \"50000\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/api/mutsamarket/items",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"mutsamarket",
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/mutsamarket/items/{itemId}",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9090/api/mutsamarket/items/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"mutsamarket",
+						"items",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/mutsamarket/items/all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/api/mutsamarket/items/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"mutsamarket",
+						"items",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/mutsamarket/items?page={page}&limit={limit}",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9090/api/mutsamarket/items?page=0&limit=3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"mutsamarket",
+						"items"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "limit",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /api/mutsamarket/items/{itemId}",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtaW5neXVuIiwiaWF0IjoxNjkwODk4MzgyLCJleHAiOjE2OTA5MDE5ODJ9.5EsDv-Yx-q-YHuJImUPU0ait_sIIEEI8P69rM1_uAxXB3kUUZXbPm9jztr67TCrr6fGzRfIuVTtM4QdWmTJHaw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/api/mutsamarket/items/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"mutsamarket",
+						"items",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /api/mutsamarket/items/{itemId}",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtaW5neXVuIiwiaWF0IjoxNjkwOTAwOTE3LCJleHAiOjE2OTA5MDQ1MTd9.aG-ofHGIG6BSUfX_grhoj-YWiKzRG57-zLXRQ-dtzKqBT2xDgW5-xJ-qGs-xFwr7ZlD2zFP9KZ-jPea1stfWtA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"중고 맥북 팝니다\",\r\n    \"description\": \"2019년 맥북 프로 13인치 모델입니다\",\r\n    \"minPriceWanted\": 1250000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/api/mutsamarket/items/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"mutsamarket",
+						"items",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /api/mutsamarket/items/{itemId}/image",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtaW5neXVuIiwiaWF0IjoxNjkwOTAwOTE3LCJleHAiOjE2OTA5MDQ1MTd9.aG-ofHGIG6BSUfX_grhoj-YWiKzRG57-zLXRQ-dtzKqBT2xDgW5-xJ-qGs-xFwr7ZlD2zFP9KZ-jPea1stfWtA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/C:/Users/mingy/OneDrive/바탕 화면/projects/siu.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9090/api/mutsamarket/items/1/image",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"mutsamarket",
+						"items",
+						"1",
+						"image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/mutsamarket/items/{itemId}/comments",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiaWF0IjoxNjkwODcxNDAxLCJleHAiOjE2OTA4NzUwMDF9.B0mabzNhJdogGSaV7zlKmmbxXgindHmo69QWkiuOKF20YRwRZy_hfxMyyGqgapkaEMPIENMu3MxDIxul_p69sQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\": \"할인 가능하신가요???\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/api/mutsamarket/items/1/comments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"mutsamarket",
+						"items",
+						"1",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/mutsamarket/items/{itemId}/comments",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/api/mutsamarket/items/1/comments?page=0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"mutsamarket",
+						"items",
+						"1",
+						"comments"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /api/mutsamarket/items/{itemId}/comments/{commentId}",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImlhdCI6MTY5MDkwMDkwNSwiZXhwIjoxNjkwOTA0NTA1fQ.lv3c8CceBsJuWnQhFNGNzHh8r1TTlI25M9V61aAG3YyeZnDiGFViIFB3wIIcCHFrJ3f6aQ-y8153h5G__8JxXg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/api/mutsamarket/items/1/comments/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"mutsamarket",
+						"items",
+						"1",
+						"comments",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT api/mutsamarket/items/{itemId}/comments/{commentId}",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImlhdCI6MTY5MDkwMDkwNSwiZXhwIjoxNjkwOTA0NTA1fQ.lv3c8CceBsJuWnQhFNGNzHh8r1TTlI25M9V61aAG3YyeZnDiGFViIFB3wIIcCHFrJ3f6aQ-y8153h5G__8JxXg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\": \"할인 가능하신가요? 1000000 정도면 고려 가능합니다\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/api/mutsamarket/items/1/comments/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"mutsamarket",
+						"items",
+						"1",
+						"comments",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT api/mutsamarket/items/{itemId}/comments/{commentId}/reply  판매게시글 작성자가 달 수 있게",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtaW5neXVuIiwiaWF0IjoxNjkwOTAwOTE3LCJleHAiOjE2OTA5MDQ1MTd9.aG-ofHGIG6BSUfX_grhoj-YWiKzRG57-zLXRQ-dtzKqBT2xDgW5-xJ-qGs-xFwr7ZlD2zFP9KZ-jPea1stfWtA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"reply\": \"됩니다\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/api/mutsamarket/items/1/comments/1/reply",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"mutsamarket",
+						"items",
+						"1",
+						"comments",
+						"1",
+						"reply"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST api/mutsamarket/items/{itemId}/proposal",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiaWF0IjoxNjkwOTAyODI1LCJleHAiOjE2OTA5MDY0MjV9.gkXLXnwUu8Ry4C5G90fEzfbKOtppbHL5qOnEMO2ZG3S8HSrEV4OTbqBv2Xbuj1DRYVERpZY5TatGeeNrB4UsjQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"suggestedPrice\": 1000000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/api/mutsamarket/items/1/proposal",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"mutsamarket",
+						"items",
+						"1",
+						"proposal"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET api/mutsamarket/items/{itemId}/proposals",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtaW5neXVuIiwiaWF0IjoxNjkwODc4MzYwLCJleHAiOjE2OTA4ODE5NjB9.8f8sw2-YlhwiPFoyfijIJOm_CQUS67BLUSpzaOEFq5brz3vRvqAJcerQhcf2hyLEefgw0wagow4FjtyYJbFH0Q",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/api/mutsamarket/items/1/proposals?page=0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"mutsamarket",
+						"items",
+						"1",
+						"proposals"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT api/mutsamarket/items/{itemId}/proposals/{proposalId} 가격 수정용",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImlhdCI6MTY5MDg3NzY2NCwiZXhwIjoxNjkwODgxMjY0fQ.LDNn9HaDtzluzmULhY_w-aeg4vVY6s75vNRzjiFdrU8cikP6SvtRAsaHDcUDad4BxkvNG6fHCFSQdnO3TNqsew",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"suggestedPrice\": 1100000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/api/mutsamarket/items/1/proposals/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"mutsamarket",
+						"items",
+						"1",
+						"proposals",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE api/mutsamarket/items/{itemId}/proposals/{proposalId}",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiaWF0IjoxNjkwOTAyODI1LCJleHAiOjE2OTA5MDY0MjV9.gkXLXnwUu8Ry4C5G90fEzfbKOtppbHL5qOnEMO2ZG3S8HSrEV4OTbqBv2Xbuj1DRYVERpZY5TatGeeNrB4UsjQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/api/mutsamarket/items/1/proposals/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"mutsamarket",
+						"items",
+						"1",
+						"proposals",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT api/mutsamarket/items/{itemId}/proposals/{proposalId} 수락, 거절 용 - 물품 주인",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtaW5neXVuIiwiaWF0IjoxNjkwODc3NjUwLCJleHAiOjE2OTA4ODEyNTB9.RJUqp7piltRCpX0Y2M_iNtwkYoROm9s7_PrODh0gxg0RZrJG63D6mKDb_VZFF-FvCP5x5JKhFO99rVQMPborAQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\": \"수락\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/api/mutsamarket/items/1/proposals/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"mutsamarket",
+						"items",
+						"1",
+						"proposals",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT api/mutsamarket/items/{itemId}/proposals/{proposalId} 확정 용 - 구매 제안한 사람(수락 상태인거 확정 가능)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImlhdCI6MTY5MDg3NzY2NCwiZXhwIjoxNjkwODgxMjY0fQ.LDNn9HaDtzluzmULhY_w-aeg4vVY6s75vNRzjiFdrU8cikP6SvtRAsaHDcUDad4BxkvNG6fHCFSQdnO3TNqsew",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\": \"확정\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/api/mutsamarket/items/1/proposals/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"mutsamarket",
+						"items",
+						"1",
+						"proposals",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
