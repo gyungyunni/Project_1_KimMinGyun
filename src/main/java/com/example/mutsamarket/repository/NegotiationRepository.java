@@ -38,8 +38,33 @@ public interface NegotiationRepository extends JpaRepository<Negotiation, Intege
     );
 
     @Query("SELECT n FROM Negotiation n " +
+            "JOIN n.salesItem si " +
             "JOIN n.user u " +
-            "WHERE u.username = :username ")
-    Optional<Negotiation> findByUsername(@Param("username") String username);
+            "WHERE n.id = :negotiationId " +
+            "AND si.id = :itemId ")
+    Optional<Negotiation> findByNegotiationIdAndSalesItemId(
+            @Param("negotiationId") Long negotiationId,
+            @Param("itemId") Long itemId
+    );
+
+
+    @Query("SELECT COUNT(n) FROM Negotiation n " + "JOIN n.user u " + "WHERE u.username = :username")
+    long countByUsername(@Param("username") String username);
+
+    @Query("SELECT n FROM Negotiation n " +
+            "JOIN n.salesItem si " +
+            "JOIN n.user u " +
+            "WHERE n.id = :negotiationId " +
+            "AND si.id = :itemId " +
+            "AND u.username = :username " +
+            "AND n.status = :status")
+    Optional<Negotiation> findBySalesItemIdAndIdAndUsernameAndStatus(
+            @Param("itemId") Long itemId,
+            @Param("negotiationId") Long negotiationId,
+            @Param("username") String username,
+            @Param("status") String status
+    );
+
+    List<Negotiation> findAllBySalesItemIdAndIdNot(Long salesItem_id, Integer id);
 
 }

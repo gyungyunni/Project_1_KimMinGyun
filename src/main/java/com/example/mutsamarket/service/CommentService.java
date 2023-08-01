@@ -84,16 +84,17 @@ public class CommentService {
 
         String username = authentication.getName();
         if(co.getReply() == null) {
+            if(salesItemRepository.findById(itemId).getUser().getUsername().equals(username)) {
+                Optional<Comment> optionalComment
+                        = commentRepository.findByCommentIdAndSalesItemId(commentId, itemId);
 
-            Optional<Comment> optionalComment
-                    = commentRepository.findByCommentIdAndSalesItemIdAndUsername(commentId, itemId, username);
+                Comment comment = optionalComment.get();
 
-            Comment comment = optionalComment.get();
+                comment.setReply(dto.getReply());
+                comment = commentRepository.save(comment);
 
-            comment.setReply(dto.getReply());
-            comment = commentRepository.save(comment);
-
-            return 1;
+                return 1;
+            }
         }
         if(salesItemRepository.findById(itemId).getUser().getUsername().equals(username)) {
 

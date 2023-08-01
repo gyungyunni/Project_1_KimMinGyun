@@ -17,4 +17,5 @@ public interface SalesItemRepository extends JpaRepository<SalesItem, Integer> {
 
     @Query(value = "SELECT si FROM SalesItem si JOIN si.user u WHERE si.id = :itemId AND u.username = :username")
     Optional<SalesItem> findByItemIdAndUsername(@Param("itemId") Long itemId, @Param("username") String username);
+
 }

@@ -47,34 +47,25 @@ public class NegotiationController {
         return negotiationService.readNegoPage(page, itemId, authentication);
     }
 
-//    @PutMapping("/items/{itemId}/proposals/{proposalId}")
-//    public ResponseEntity<Map<String, String>> updateNegotiation(
-//            @PathVariable("itemId") Long itemId,
-//            @PathVariable("proposalId") Long Id,
-//            @Valid @RequestBody NegotiationEnrollDto dto
-//    ) {
-//        if(negotiationService.updateNegotiation(itemId, Id, dto) == 1) {
-//
-//            log.info(dto.toString());
-//            Map<String, String> responseBody = new HashMap<>();
-//            responseBody.put("message", "제안이 수정되었습니다.");
-//            return ResponseEntity.ok(responseBody);
-//        }
-//        if(negotiationService.updateNegotiation(itemId, Id, dto) == 2){
-//            log.info(dto.toString());
-//            Map<String, String> responseBody = new HashMap<>();
-//            responseBody.put("message", "제안의 상태가 변경되었습니다.");
-//            return ResponseEntity.ok(responseBody);
-//        }
-//        if(negotiationService.updateNegotiation(itemId, Id, dto) == 3){
-//            log.info(dto.toString());
-//            Map<String, String> responseBody = new HashMap<>();
-//            responseBody.put("message", "구매가 확정되었습니다.");
-//            return ResponseEntity.ok(responseBody);
-//        }
-//        else throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-//    }
-//
+    @PutMapping("/items/{itemId}/proposals/{proposalId}")
+    public ResponseEntity<Map<String, String>> updateNegotiation(
+            @PathVariable("itemId") Long itemId,
+            @PathVariable("proposalId") Long Id,
+            @Valid @RequestBody NegotiationEnrollDto dto,
+            Authentication authentication
+    ) {
+        int updateResult = negotiationService.updateNegotiation(itemId, Id, dto, authentication);
+
+        Map<String, String> responseBody = new HashMap<>();
+        switch (updateResult) {
+            case 1 -> responseBody.put("message", "제안이 수정되었습니다.");
+            case 2 -> responseBody.put("message", "제안의 상태가 변경되었습니다.");
+            case 3 -> responseBody.put("message", "구매가 확정되었습니다.");
+            default -> throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(responseBody);
+    }
+
     @DeleteMapping("/items/{itemId}/proposals/{proposalId}")
     public ResponseEntity<Map<String, String>> deleteNegotiation(
             @PathVariable("itemId") Long itemId,

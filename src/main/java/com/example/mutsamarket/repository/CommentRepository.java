@@ -26,5 +26,14 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
             @Param("itemId") Long itemId,
             @Param("username") String username
     );
+    @Query("SELECT c FROM Comment c " +
+            "JOIN c.salesItem si " +
+            "JOIN c.user u " +
+            "WHERE c.id = :commentId " +
+            "AND si.id = :itemId ")
+    Optional<Comment> findByCommentIdAndSalesItemId(
+            @Param("commentId") Long commentId,
+            @Param("itemId") Long itemId
+    );
 
 }
