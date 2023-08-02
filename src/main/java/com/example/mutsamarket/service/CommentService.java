@@ -29,6 +29,7 @@ public class CommentService {
     private final SalesItemRepository salesItemRepository;
     private final UserRepository userRepository;
 
+    //댓글 등록
     public void enrollComment(CommentEnrollDto dto, Long itemId, Authentication authentication) {
 
         String loginUser = authentication.getName();
@@ -45,6 +46,7 @@ public class CommentService {
 
     }
 
+    //댓글 페이지 조회, 인증 x
     public Page<CommentsReadDto> readCommentsPage(Long page, Long itemId) {
         Pageable pageable = PageRequest.of(Math.toIntExact(page), 25);
         Page<Comment> commentsPage
@@ -53,6 +55,7 @@ public class CommentService {
         return commentsPage.map(CommentsReadDto::fromEntity);
     }
 
+    //댓글 수정
     public void updateComment(
             Long itemId,
             Long id,
@@ -74,6 +77,8 @@ public class CommentService {
 
     }
 
+    // 답글 추가, 물품 게시글 작성자만 사용할 수 있음
+    // return 1이면 새로운 답변 추가, 2이면 답변 수정
     public int addReply(
             Long itemId,
             Long commentId,
@@ -106,6 +111,7 @@ public class CommentService {
         else return 0;
     }
 
+    // 댓글 삭제
     public boolean deleteComment(Long itemId, Long id, Authentication authentication) {
 
         String username = authentication.getName();

@@ -30,6 +30,8 @@ public class NegotiationService {
     private final NegotiationRepository negotiationRepository;
     private final SalesItemRepository salesItemRepository;
     private final UserRepository userRepository;
+
+    //제안 등록
     public void enrollNegotiation(NegotiationEnrollDto dto , Long itemId, Authentication authentication) {
 
         String check = authentication.getName();
@@ -44,6 +46,7 @@ public class NegotiationService {
         newNego = negotiationRepository.save(newNego);
     }
 
+    // 제안 조회, 물품 게시글 작성자와 네고 작성자에 따라 다름
     public Page<NegotiationReadDto> readNegoPage(Long page, Long itemId, Authentication authentication) {
 
         String username = authentication.getName();
@@ -71,6 +74,10 @@ public class NegotiationService {
         }
     }
 
+    // 네고 업데이트는 3가지 경우로 나뉨
+    // 첫번째 경우는 status가 "제안"일 때 네고 가격을 수정할 수 있음
+    // 두번째 경우는 물품 판매자가 네고 가격을 보고 status 상태를 수락이나 거절로 변경하는 것
+    // 세번째 경우는 네고 작성자가 status 상태가 수락인 것에 한해 구매확정 상태로 변경가능. 변경하면 다른 네고들의 status는 거절로 바뀜
     public int updateNegotiation(
             Long itemId,
             Long id,
@@ -130,6 +137,7 @@ public class NegotiationService {
         return 0;
     }
 
+    // 네고 삭제
     public boolean deleteNegotiation(Long itemId, Long id, Authentication authentication) {
 
         String username = authentication.getName();

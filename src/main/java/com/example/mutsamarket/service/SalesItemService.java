@@ -31,6 +31,7 @@ public class SalesItemService {
     private final SalesItemRepository salesItemRepository;
     private final UserRepository userRepository;
 
+    // 물픔 등록
     public void enrollSalesItem(SalesItemEnrollDto dto, Authentication authentication) {
 
         String loginUser = authentication.getName();
@@ -50,6 +51,7 @@ public class SalesItemService {
 
     }
 
+    //물품 단일 조회, 인증 x
     public SalesItemReadDto readItem(Long itemId) {
         Optional<SalesItem> optionalSalesItem
                 = salesItemRepository.findById(Math.toIntExact(itemId));
@@ -61,6 +63,8 @@ public class SalesItemService {
             // 아니면 404
         else throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
+
+    //물품 전체 조회, 인증 x
     public List<SalesItemReadDto> readItemAll() {
 
         List<SalesItem> salesItemList = salesItemRepository.findAll();
@@ -77,6 +81,7 @@ public class SalesItemService {
 
     }
 
+    //물품 페이지 조회, 인증 x
     public Page<SalesItemReadDto> readPageItem(Long page, Long limit) {
 
         Pageable pageable = PageRequest.of(Math.toIntExact(page), Math.toIntExact(limit));
@@ -89,6 +94,7 @@ public class SalesItemService {
 
     }
 
+    //물품 판매글 수정
     public void updateSalesItem(
             Long itemId,
             SalesItemEnrollDto dto,
@@ -111,6 +117,7 @@ public class SalesItemService {
         }
     }
 
+    //물푼 판매글에 이미지 첨부
     public SalesItemEnrollDto updateMarketImage(MultipartFile Image, Long id, Authentication authentication) {
 
         String username = authentication.getName();
@@ -157,6 +164,7 @@ public class SalesItemService {
         }
     }
 
+    // 물품 판매글 삭제
     public boolean deleteItem(Long id, Authentication authentication) {
 
         String username = authentication.getName();
@@ -164,7 +172,6 @@ public class SalesItemService {
         Optional<SalesItem> optionalSalesItem = salesItemRepository.findByItemIdAndUsername(id, username);
 
         if (optionalSalesItem.isPresent()) {
-            // DTO로 전환 후 반환
             salesItemRepository.delete(optionalSalesItem.get());
             return true;
         } else return false;
