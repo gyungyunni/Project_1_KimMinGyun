@@ -1,20 +1,133 @@
-# 멋사 미션형 프로젝트
+## 멋사 미션형 프로젝트
 > 지난 미니 프로젝트에서는 기초를 다졌다면, 이번 미션형 프로젝트에서는 기초를 응용해보는 시간입니다.
 > 이번 미션형 프로젝트 또한 요구사항 정의서 기반의 백엔드 기능 구현 미션의 형태로, 단계적으로 서비스를 만들어봅니다. 
 
-# 멋사 마켓 ERD
+## 멋사 마켓 ERD
 
 <img width="60%" src="https://github.com/likelion-backend-5th/Project_1_KimMinGyun/assets/86220874/8d27da88-7754-4de1-8dff-4ee95fbafd19"/>
 
 > UserEntity가 추가됨으로써 ERD를 다시 작성해봤습니다.
 
+<details>
+<summary>  
       
+  ### 기술 스택 
+</summary>
+
+<img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=red"><img src="https://img.shields.io/badge/intellijidea-000000F?style=for-the-badge&logo=Spring Boot&logoColor=black">   
+</details>
+===========================================================================
+<details>
+   
+<summary>  
+      
+  ### Mission by date
+</summary>
+
+### Day1
+
+```sh
+1. 사용자는 **회원가입**을 진행할 수 있다.
+    - 회원가입에 필요한 정보는 아이디와 비밀번호가 필수이다.
+    - 부수적으로 전화번호, 이메일, 주소 정보를 기입할 수 있다.
+    - 이에 필요한 사용자 Entity는 직접 작성하도록 한다.
+    
+2. **아이디 비밀번호**를 통해 로그인을 할 수 있어야 한다.
+    
+    
+3. 아이디 비밀번호를 통해 로그인에 성공하면, **JWT가 발급**된다. 이 JWT를 소유하고 있을 경우 **인증**이 필요한 서비스에 접근이 가능해 진다.
+    - 인증이 필요한 서비스는 추후(미션 후반부) 정의한다.
+    
+4. JWT를 받은 서비스는 **사용자가 누구인지** 사용자 **Entity를 기준**으로 정확하게 판단할 수 있어야 한다.
+```
+
+### (요구사항 구현하기 위해 집중한 부분, 변경하거나 추가한 부분)
+* 1 
+    * 필수 정보인 아이디, 비밀번호에 부수적으로 전화번호, 이메일, 주소 정보를 기입해야해서 UserDetails를 implements한 
+      CustomUserDetails를 작성하였다.
+    * 이에 필요한 UserEntity를 작성하였다.
+    * 필수 정보인 username 과 password는 nullable = false를 하였고, username은 중복이 되면 안되기 때문에 unique 속성도 부여하였다.
+    * 회원가입은 TokenController의 Post token/register로 진행할 수 있다.
+ 
+ * 2 
+    * 아이디 / 비밀번호로 로그인하기 위해서 JwtRequestDto를 활용하였다.
+      
+ * 3
+    * 로그인에 성공하면 JWT가 발급되는데, TokenController의 Post token/issue로 진행할 수 있다.
+    * username과 password가 일치하면 token을 생성하고 부여해준다
+      
+ * 4 
+    * TokenController의 Post token/check로 사용자가 누구인지 확인할 수 있다.
+    * Authorization bearer 부분에 토큰을 넣어줌으로써 username을 반환한다.        
+            
+===========================================================================
+
+### Day2
+
+```sh
+1. 아이디와 비밀번호를 필요로 했던 테이블들은 실제 사용자 Record에 대응되도록 ERD를 수정하자.
+    - ERD 수정과 함께 해당 정보를 적당히 표현할 수 있도록 Entity를 재작성하자.
+    - 그리고 ORM의 기능을 충실히 사용할 수 있도록 어노테이션을 활용한다.
+    
+2. 다른 작성한 Entity도 변경을 진행한다.
+    - 서로 참조하고 있는 테이블 관계가 있다면, 해당 사항이 표현될 수 있도록 Entity를 재작성한다.
+```
+
+* 1(UserEntity) 
+    * 맨 위에 첨부해둔 ERD에 맞춰 엔티티를 수정하였다.
+    * BaseEntity를 상속받은 UserEntity를 만들어줌으로써 createdAt, updatedAt 속성이 추가되었다.
+    * 엔티티들과 연관을 맺을때 생기는 중간 매핑 테이블을 없애기위해 @JoinColumn을 이용하여 어떤 컬럼으로 조인을 할지 지정해주었다
+    * 그리고 cascade-remove를 설정해 user 데이터가 지워질 때, 그 user가 포함된 데이터를 같이 지워지도록 하였다.
+
+* 2(OtherEntities) 
+    * 맨 위에 첨부해둔 ERD에 맞춰 엔티티를 수정하였다.
+    * UserEntity에서 @OneToMany를 맺어주었지만, 다른 엔티티에서도 @ManyToOne을 이용하여 양방향으로 매핑을 해주겠다.
+    * Many 쪽에 FK가 생기기 때문에, 어느 엔티티에서 연관 엔티티가 필요한지를 생각하고 관계를 맺어주면 좋다.
+    * 이 프로젝트에서는 보통 판매 게시글이나 댓글, 네고 글 에서 유저를 찾아서 @ManyToOne이 유용하지만, 양방향으로 관계를 맺어주었다.
+    * @ManyToOne을 할 때, CascadeType.PERSIST, CascadeType.MERGE 기능도 추가하여 각각의 엔티티에서 삽입이나, 수정을 할 때
+      One 쪽 엔티티에도 반영이 되게 설정해주었다.
+      
+===========================================================================
+
+### Day3
+```sh
+1. 본래 “누구든지 열람할 수 있다”의 기능 목록은 사용자가 **인증하지 않은 상태**에서 사용할 수 있도록 한다.
+    - 등록된 물품 정보는 누구든지 열람할 수 있다.
+    - 등록된 댓글은 누구든지 열람할 수 있다.
+    - 기타 기능들
+    
+2. 작성자와 비밀번호를 포함하는 데이터는 **인증된 사용자만 사용**할 수 있도록 한다.
+    - 이때 해당하는 기능에 포함되는 아이디 비밀번호 정보는, 1일차에 새로 작성한 사용자 Entity와의 관계로 대체한다.
+        - 물품 정보 등록 → 물품 정보와 사용자 관계 설정
+        - 댓글 등록 → 댓글과 사용자 관계 설정
+        - 기타 등등
+    - 누구든지 중고 거래를 목적으로 물품에 대한 정보를 등록할 수 있다.
+    - 등록된 물품에 대한 질문을 위하여 댓글을 등록할 수 있다.
+    - 등록된 물품에 대하여 구매 제안을 등록할 수 있다.
+    - 기타 기능들
+```
+
+* 1
+    * permitAll()에 
+      "/token/issue", "/token/register"
+      HttpMethod.GET, "/api/mutsamarket/items", "/api/mutsamarket/items/all", "/api/mutsamarket/items/{itemId}",
+                      "/api/mutsamarket/items/{itemId}/comments"
+      을 추가해줌으로써 로그인, 회원가입, 판매게시글 조회 3가지, 댓글 조회는 별 다른 인증 없이 누구든지 열람이 가능하다.
+
+* 2
+    * read를 제외한 다른 대부분의 기능들 create, update, delete는 인증된 사용자만 사용할 수 있도록 하였다
+    * 예를들어, 등록은 누구든지 할 수 있지만 삭제, 수정 등을 할 때는 그 객체(물품, 댓글, 네고 등)의 등록자만이 할 수 있다
+    * 또한, 네고를 조회할 때도 물품 정보 등록자는 모든 네고를 확인할 수 있고, 네고 작성자는 본인이 작성한 네고만 확인할 수 있다.
+
+</details>
+===========================================================================
+
 <details>
 <summary>
     
   ### Postman Test
 </summary>
-===========================================================================
+
 
 (사진을 클릭하시면 크게 볼 수 있습니다)
 
