@@ -211,24 +211,24 @@
 ```
 
 ### (요구사항 구현하기 위해 집중한 부분, 변경하거나 추가한 부분)
-
-* 1
-      * 필수 정보인 아이디, 비밀번호에 부수적으로 전화번호, 이메일, 주소 정보를 기입해야해서 UserDetails를 implements한
-        CustomUserDetails를 작성하였다. 
-      * 이에 필요한 UserEntity를 작성하였다.
-      * 필수 정보인 username 과 password는 nullable = false를 하였고, username은 중복이 되면 안되기 때문에 unique 속성도 부여하였다.
-      * 회원가입은 TokenController의 Post token/register로 진행할 수 있다.
-   
-* 2
-      * 아이디 / 비밀번호로 로그인하기 위해서 JwtRequestDto를 활용하였다.
-
-* 3
-      * 로그인에 성공하면 JWT가 발급되는데, TokenController의 Post token/issue로 진행할 수 있다.
-      * username과 password가 일치하면 token을 생성하고 부여해준다
-
-* 4
-      * TokenController의 Post token/check로 사용자가 누구인지 확인할 수 있다.
-      * Authorization bearer 부분에 토큰을 넣어줌으로써 username을 반환한다.            
+* 1 
+    * 필수 정보인 아이디, 비밀번호에 부수적으로 전화번호, 이메일, 주소 정보를 기입해야해서 UserDetails를 implements한 
+      CustomUserDetails를 작성하였다.
+    * 이에 필요한 UserEntity를 작성하였다.
+    * 필수 정보인 username 과 password는 nullable = false를 하였고, username은 중복이 되면 안되기 때문에 unique 속성도 부여하였다.
+    * 회원가입은 TokenController의 Post token/register로 진행할 수 있다.
+ 
+ * 2 
+    * 아이디 / 비밀번호로 로그인하기 위해서 JwtRequestDto를 활용하였다.
+      
+ * 3
+    * 로그인에 성공하면 JWT가 발급되는데, TokenController의 Post token/issue로 진행할 수 있다.
+    * username과 password가 일치하면 token을 생성하고 부여해준다
+      
+ * 4 
+    * TokenController의 Post token/check로 사용자가 누구인지 확인할 수 있다.
+    * Authorization bearer 부분에 토큰을 넣어줌으로써 username을 반환한다.        
+            
 ===========================================================================
 
 ### Day2
