@@ -7,8 +7,18 @@
 <img width="60%" src="https://github.com/likelion-backend-5th/Project_1_KimMinGyun/assets/86220874/8d27da88-7754-4de1-8dff-4ee95fbafd19"/>
 
 > UserEntity가 추가됨으로써 ERD를 다시 작성해봤습니다.
-    
+
 <details>
+<summary>  
+      
+  ### 기술 스택 
+</summary>
+
+<img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=red"><img src="https://img.shields.io/badge/intellijidea-000000F?style=for-the-badge&logo=Spring Boot&logoColor=black">   
+</details>
+===========================================================================
+<details>
+   
 <summary>  
       
   ### Mission by date
